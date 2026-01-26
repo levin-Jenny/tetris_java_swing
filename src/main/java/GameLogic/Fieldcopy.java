@@ -2,7 +2,7 @@ package GameLogic;
 
 import UI.UI;
 
-import java.util.Random;
+
 
 public class Fieldcopy {
     private int[][] field;
@@ -50,18 +50,11 @@ public class Fieldcopy {
 
 
 
-    public void setGameStats(GameStats gameStats)
-    {
-        this.gameStats = gameStats;
-    }
-
     public void setBlockType(char blockType) {
         this.blockType = blockType;
     }
 
-    public char getBlockType() {
-        return blockType;
-    }
+
 
     public int[][] getField() {
         return field;
@@ -187,10 +180,7 @@ public class Fieldcopy {
 
     public void moveBlockDown()
     {
-//        if (field.length - 1 == blockPositionCoords[0])
-//        {
-//            return;
-//        }
+
 
         if(checkValidPlacement(0))
         {

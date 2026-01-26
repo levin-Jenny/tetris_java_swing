@@ -23,7 +23,9 @@ public class SavedBlocks {
     public void setSavedBlocksAttributes(Fieldcopy fieldcopy, UI ui, int seed)
     {
         if (seed == 0)
-        {this.random = new Random(seed);}
+        {
+            this.random = new Random();
+        }
         else
         {this.random = new Random(seed);}
 
@@ -58,7 +60,7 @@ public class SavedBlocks {
             fieldcopy.setBlockType(typeNextBlockCoords);
 
             Block.newBlock(this, random);
-            holdBlockCoords = blockCoords;
+
 
         }
 
