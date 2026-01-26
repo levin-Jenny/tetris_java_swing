@@ -82,9 +82,10 @@ public class UI extends JFrame {
 
         drawPanel.setDrawPanelfield(field.getField());
 
-        turnDarkModeOn();
+
         if(darkmode)
         {
+            turnDarkModeOn();
             drawPanel.setBackground(Color.black);
         }
 

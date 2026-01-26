@@ -19,7 +19,7 @@ public class Main {
         gameStats.setGameStatsAttributes(gravity, ui);
         gravity.setGravityAttributes(fieldcopy);
         savedBlocks.setSavedBlocksAttributes(fieldcopy, ui, 0); //You can set the Seed for the game, when you set the seed 0, a random seed will be used.
-        ui.setUIattributes(field,fieldcopy,true); //you can set here if u want darkmode
+        ui.setUIattributes(field,fieldcopy, true); //you can set here if u want darkmode
 
         //Setup Objects when needed
         savedBlocks.setupSavedBlock();//setup Saved blocks w/ setupSavedBlocks();
