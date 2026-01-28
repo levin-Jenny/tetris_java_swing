@@ -71,12 +71,12 @@ public class Fieldcopy {
     {
         if (canHoldBlock)
         {
+            updateFieldCopy();
             savedBlocks.holdBlock(blockCoords, blockType, this);
             int xCoord = field[0].length / 2;
             blockPositionCoords = new int[] {1, xCoord};
             writeIntoFieldCopy(blockCoords, blockPositionCoords);
             paintField();
-            updateFieldCopy();
             canHoldBlock = false;
             ui.setHoldBlockCoords(savedBlocks.holdBlockCoords,savedBlocks.typeHoldBlockCoords);
         }
@@ -97,34 +97,35 @@ public class Fieldcopy {
 
     public void rotateBlockCounterClockwise()
     {
+        updateFieldCopy();
         if(checkValidPlacement(3,Block.rotateBlockCounterClockwise(blockCoords,blockType)))
         {
             blockCoords = Block.rotateBlockCounterClockwise(blockCoords, blockType);
         }
         writeIntoFieldCopy(blockCoords, blockPositionCoords);
         paintField();
-        updateFieldCopy();
-
     }
     public void flipBlock()
     {
+        updateFieldCopy();
         if(checkValidPlacement(3,Block.flipBlock(blockCoords, blockType)))
         {
             blockCoords = Block.flipBlock(blockCoords, blockType);
         }
         writeIntoFieldCopy(blockCoords, blockPositionCoords);
         paintField();
-        updateFieldCopy();
+
     }
     public void rotateBlockClockwise()
     {
+        updateFieldCopy();
         if(checkValidPlacement(3,Block.rotateBlockClockwise(blockCoords, blockType)))
         {
             blockCoords = Block.rotateBlockClockwise(blockCoords, blockType);
         }
         writeIntoFieldCopy(blockCoords, blockPositionCoords);
         paintField();
-        updateFieldCopy();
+
     }
 
     public boolean checkValidPlacement(int direction, int[][] blockCoords) //direction ==> Down == 0, Right == 1, Left == 2, Nichts == 3
@@ -167,6 +168,7 @@ public class Fieldcopy {
 
     public void dashDown()
     {
+        updateFieldCopy();
         while(checkValidPlacement(0))
         {
             blockPositionCoords[0]++;
@@ -180,23 +182,19 @@ public class Fieldcopy {
 
     public void moveBlockDown()
     {
-
+        updateFieldCopy();
 
         if(checkValidPlacement(0))
         {
             blockPositionCoords[0]++;
             writeIntoFieldCopy(blockCoords, blockPositionCoords);
             paintField();
-            updateFieldCopy();
         }
         else
         {
             placeBlock();
             return;
         }
-
-        updateFieldCopy();
-
     }
 
     public void writeIntoFieldCopy(int[][] block, int[] posInField)
@@ -242,6 +240,7 @@ public class Fieldcopy {
 
     public void moveRight()
     {
+        updateFieldCopy();
         if(field[0].length - 1 == blockPositionCoords[1])
         {
             return;
@@ -252,13 +251,15 @@ public class Fieldcopy {
             blockPositionCoords[1]++;
             writeIntoFieldCopy(blockCoords, blockPositionCoords);
             paintField();
-            updateFieldCopy();
+
         }
 
     }
 
     public void moveLeft()
-    {   if (blockPositionCoords[1] == 0)
+    {
+        updateFieldCopy();
+        if (blockPositionCoords[1] == 0)
         {
             return;
         }
@@ -267,7 +268,7 @@ public class Fieldcopy {
             blockPositionCoords[1]--;
             writeIntoFieldCopy(blockCoords, blockPositionCoords);
             paintField();
-            updateFieldCopy();
+
         }
 
     }
@@ -282,7 +283,9 @@ public class Fieldcopy {
         this.field = new int[rows][cols];
 
         for (int i = 0; i < rows; i++) {
-            System.arraycopy(original[i], 0, this.field[i], 0, cols);
+            field[i] = original[i].clone();
         }
+
     }
+
 }

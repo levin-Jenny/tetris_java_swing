@@ -4,14 +4,16 @@ import UI.UI;
 
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Field {
     private final int x;
     private final int y;
     private int[][] field;
-    Fieldcopy fieldcopy;
-    UI ui;
-    GameStats gameStats;
+    private Fieldcopy fieldcopy;
+    private UI ui;
+    private GameStats gameStats;
+    private Random random;
 
 /*
     //für Tests getter Setter
@@ -66,6 +68,7 @@ public class Field {
         this.x = x;
         this.y = y;
         field = new int[y][x];
+        this.random = new Random();
     }
 
 
@@ -175,16 +178,23 @@ public class Field {
     {
         for(int i = 1; i < field.length; i++)
         {
-            field[i-1] = field[1].clone();
+            field[i-1] = field[i].clone();
         }
     }
 
     public void placeGarbage(int emptyPos)
     {
         moveLinesUp();
-        int[] line = new int[9];
+        int[] line = new int[x];
         Arrays.fill(line, 8);
         line[emptyPos] = 0;
+        field[y - 1] = line;
+
+    }
+
+    public void placeMultipleGarbage(int repeats)
+    {
+        placeMultipleGarbage(repeats, random.nextInt(x-1));
     }
 
 

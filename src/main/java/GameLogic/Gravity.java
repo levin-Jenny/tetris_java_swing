@@ -8,15 +8,19 @@ public class Gravity implements Runnable {
     private Thread thread;
     private long now;
     private long lastFallTime;
+    private GameModifiers gameModifiers;
+
+
 
 
     public Gravity() {
 
     }
 
-    public void setGravityAttributes(Fieldcopy fieldcopy)
+    public void setGravityAttributes(Fieldcopy fieldcopy, GameModifiers gameModifiers)
     {
         this.fieldcopy = fieldcopy;
+        this.gameModifiers = gameModifiers;
     }
 
     public void upDateInterval(int levels)
@@ -24,6 +28,9 @@ public class Gravity implements Runnable {
         interval = (int)(400 * Math.pow(0.9,levels));
     }
 
+    public int getInterval() {
+        return interval;
+    }
 
     @Override
     public void run() {
@@ -33,9 +40,11 @@ public class Gravity implements Runnable {
             now = System.currentTimeMillis();
 
             if (now - lastFallTime >= interval) {
-
+                gameModifiers.addToGarbageTime(interval);
                 fieldcopy.moveBlockDown();
                 lastFallTime = now;
+
+
             }
 
             try {

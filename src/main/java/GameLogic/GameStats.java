@@ -10,16 +10,18 @@ public class GameStats {
 
     Gravity gravity;
     UI ui;
+    GameModifiers gameModifiers;
 
     public GameStats()
     {
 
     }
 
-    public void setGameStatsAttributes(Gravity gravity, UI ui)
+    public void setGameStatsAttributes(Gravity gravity, UI ui, GameModifiers gameModifiers)
     {
         this.gravity = gravity;
         this.ui = ui;
+        this.gameModifiers = gameModifiers;
     }
 
 
@@ -30,6 +32,7 @@ public class GameStats {
             levels++;
             linesForLevel -= 5;
             gravity.upDateInterval(levels);
+            gameModifiers.setGarbageTime(gravity.getInterval()* 13L);
             ui.setLevel(levels);
         }
 
