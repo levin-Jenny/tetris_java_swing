@@ -5,60 +5,34 @@ import java.util.Random;
 
 public abstract class Block {
 
+    private static final int[][] I_BLOCK = {{0, 0}, {-1, 0}, {1, 0}, {2, 0}};
+
+    private static final int[][] T_BLOCK = {{0, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    private static final int[][] O_BLOCK = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
+
+    private static final int[][] S_BLOCK = {{0, 0}, {1, 0}, {0, -1}, {1, 1}};
+
+    private static final int[][] Z_BLOCK = {{0, 0}, {1, 0}, {0, 1}, {1, -1}};
+
+    private static final int[][] J_BLOCK = {{0, 0}, {1, 0}, {-1, -1}, {-1, 0}};
+
+    private static final int[][] L_BLOCK = {{0, 0}, {1, 0}, {-1, 1}, {-1, 0}};
+
+
 
     public static int[][] getBlockCoordsByType(char type)
     {
-        int[][] blockCoords = new int[4][2];
-
-        switch(type)
-        {
-            case 'i':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {-1,0};
-                blockCoords[2] = new int[] {1,0};
-                blockCoords[3] = new int[] {2,0};
-                break;
-            case 't':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {1,0};
-                blockCoords[2] = new int[] {0,-1};
-                blockCoords[3] = new int[] {0,1};
-                break;
-            case 'o':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {1,0};
-                blockCoords[2] = new int[] {0,1};
-                blockCoords[3] = new int[] {1,1};
-                break;
-            case 's':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {1,0};
-                blockCoords[2] = new int[] {0,-1};
-                blockCoords[3] = new int[] {1,1};
-                break;
-            case 'z':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {1,0};
-                blockCoords[2] = new int[] {0,1};
-                blockCoords[3] = new int[] {1,-1};
-                break;
-            case 'j':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {1,0};
-                blockCoords[2] = new int[] {-1,-1};
-                blockCoords[3] = new int[] {-1,0};
-                break;
-            case 'l':
-                blockCoords[0] = new int[] {0,0};
-                blockCoords[1] = new int[] {1,0};
-                blockCoords[2] = new int[] {-1,1};
-                blockCoords[3] = new int[] {-1,0};
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid Block type");
-        }
-
-        return blockCoords;
+        return switch (type) {
+            case 'i' -> I_BLOCK;
+            case 't' -> T_BLOCK;
+            case 'o' -> O_BLOCK;
+            case 's' -> S_BLOCK;
+            case 'z' -> Z_BLOCK;
+            case 'j' -> J_BLOCK;
+            case 'l' -> L_BLOCK;
+            default -> throw new IllegalArgumentException("Invalid Block type");
+        };
     }
 
 
@@ -77,7 +51,20 @@ public abstract class Block {
     }
 
 
-
+    public static int getIntByType(char type)
+    {
+        return switch (type)
+        {
+            case 'i' -> 1;
+            case 't' -> 2;
+            case 'j' -> 3;
+            case 'l' -> 4;
+            case 's' -> 5;
+            case 'z' -> 6;
+            case 'o' -> 7;
+            default -> throw new IllegalArgumentException("Invalid Int type");
+        };
+    }
 
     public static int[][] rotateBlockClockwise(int[][] blockCoords, char blockType)
     {

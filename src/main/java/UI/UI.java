@@ -51,10 +51,6 @@ public class UI extends JFrame {
     }
 
 
-    public void setNextBlockCoords(int[][] nextBlockCoords, char nextBlockType) {
-        drawPanel.updateNextBlockCoords(nextBlockCoords, nextBlockType);
-    }
-
     public void setHoldBlockCoords(int[][] holdBlockCoords, char nextBlockType)
     {
         drawPanel.updateHoldBlock(holdBlockCoords, nextBlockType);

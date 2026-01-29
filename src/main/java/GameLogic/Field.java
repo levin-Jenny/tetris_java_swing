@@ -15,49 +15,6 @@ public class Field {
     private GameStats gameStats;
     private Random random;
 
-/*
-    //für Tests getter Setter
-
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public UI getUi() {
-        return ui;
-    }
-
-    public void setUi(UI ui) {
-        this.ui = ui;
-    }
-
-    public Fieldcopy getFieldcopy() {
-        return fieldcopy;
-    }
-
-    public void setFieldcopy(Fieldcopy fieldcopy) {
-        this.fieldcopy = fieldcopy;
-    }
-
-    public void setField(int[][] field) {
-        this.field = field;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-
-    //ende getter setter für tests
-*/
 
     public int[][] getField() {
         return field;
@@ -95,43 +52,17 @@ public class Field {
 
     public void writeIntoField(int[][] block, int[] posInField, char blockType)
     {
-
+        int intForColor = Block.getIntByType(blockType);
         for(int[] coord: block)
         {
             int y = coord[0] + posInField[0];
             int x = coord[1] + posInField[1];
-            switch(blockType)
-            {
-                case 'i':
-                    field[y][x] = 1;
-                    break;
-                case 't':
-                    field[y][x] = 2;
-                    break;
-                case 'j':
-                    field[y][x] = 3;
-                    break;
-                case 'l':
-                    field[y][x] = 4;
-                    break;
-                case 's':
-                    field[y][x] = 5;
-                    break;
-                case 'z':
-                    field[y][x] = 6;
-                    break;
-                case 'o':
-                    field[y][x] = 7;
-                    break;
-            }
-
+            field[y][x] = intForColor;
         }
         updateField();
         failCheck();
 
         fieldcopy.updateFieldCopy();
-
-
         ui.paintField();
     }
 
@@ -205,7 +136,5 @@ public class Field {
             placeGarbage(emptyPos);
         }
     }
-
-
 
 }

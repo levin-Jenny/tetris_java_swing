@@ -12,8 +12,6 @@ public class SavedBlocks {
     private UI ui;
     private DrawPanel drawPanel;
     Queue<Character> nextBlocksTypes = new ArrayDeque<>(); // I dont save the whole Block i just save the type so I will just Generate it Again
-    int[][] nextBlockBufferCoords;
-    char typeNextBlockBufferCoords;
 
     char typeHoldBlock; // I dont save the whole Block i just save the type so I will just Generate it Again
 
@@ -65,15 +63,6 @@ public class SavedBlocks {
         drawPanel.setNextBlockQueue(nextBlocksTypes);
     }
 
-    public void setUpdateDrawPanelBlocksQueue(int[][] nextBlockBufferCoords) {
-        this.nextBlockBufferCoords = nextBlockBufferCoords;
-        //Todo make queue in drawpanel
-        //ui.setNextBlockCoords(nextBlocksCoords.peek(), nextBlocksTypes.peek());
-    }
-
-    public void setTypeNextBlockBufferCoords(char typeNextBlockBufferCoords) {
-        this.typeNextBlockBufferCoords = typeNextBlockBufferCoords;
-    }
 
     public void holdBlock(char type, Fieldcopy fieldcopy)
     {

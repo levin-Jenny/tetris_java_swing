@@ -16,12 +16,18 @@ public class DrawPanel extends JPanel {
     private int level = 1;
     private int score = 0;
     private Font font = new Font("Arial", Font.PLAIN, 22);
-    private char nextBlockType;
 
     private Queue<Character> nextBlockQueue;
 
     private char holdBlockType;
     private boolean darkMode = false;
+
+//    private fieldType fieldToPrint;
+//
+//    enum fieldType
+//    {
+//        Original,Copy
+//    }
 
     public void turnDarkModeOn()
     {
@@ -81,11 +87,6 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
-    public void updateNextBlockCoords(int[][] nextBlockCoords, char nextBlockType)
-    {
-
-        this.nextBlockType = nextBlockType;
-    }
 
     public void updateHoldBlock(int[][] holdBlockCoords, char holdBlockType)
     {
@@ -227,30 +228,8 @@ public class DrawPanel extends JPanel {
             yMiniGrid++;
         }
 
-        switch(holdBlockType)
-        {
-            case 'i':
-                g2.setColor(Color.BLUE);
-                break;
-            case 't':
-                g2.setColor(Color.GREEN);
-                break;
-            case 'j':
-                g2.setColor(Color.YELLOW);
-                break;
-            case 'l':
-                g2.setColor(Color.ORANGE);
-                break;
-            case 's':
-                g2.setColor(Color.magenta);
-                break;
-            case 'z':
-                g2.setColor(Color.CYAN);
-                break;
-            case 'o':
-                g2.setColor(Color.RED);
-                break;
-        }
+        g2.setColor(Block.getBlockColorByType(holdBlockType));
+
 
         if (holdBlockType != '\u0000') //Test if null
         {
