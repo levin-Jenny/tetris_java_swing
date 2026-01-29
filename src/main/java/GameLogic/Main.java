@@ -1,6 +1,7 @@
 package GameLogic;
 
 import UI.UI;
+import UI.DrawPanel;
 
 public class Main {
     static void main()
@@ -13,6 +14,7 @@ public class Main {
         SavedBlocks savedBlocks = new SavedBlocks();
         GameModifiers gameModifiers = new GameModifiers();
         UI ui = new UI();
+        DrawPanel drawPanel = new DrawPanel();
 
         //Set Attributes of different Objects
         gameModifiers.setGameModifiersAttributes(field, true);
@@ -20,8 +22,8 @@ public class Main {
         fieldcopy.setFieldcopyAttributes(savedBlocks, field, ui, gravity, gameStats);
         gameStats.setGameStatsAttributes(gravity, ui, gameModifiers);
         gravity.setGravityAttributes(fieldcopy, gameModifiers);
-        savedBlocks.setSavedBlocksAttributes(fieldcopy, ui, 1); //You can set the Seed for the game, when you set the seed 0, a random seed will be used.
-        ui.setUIattributes(field,fieldcopy, false); //you can set here if u want darkmode
+        savedBlocks.setSavedBlocksAttributes(fieldcopy, ui, true,1, drawPanel, true); //If seedActive,You can set the Seed for the game, else the seed Will be "Random"
+        ui.setUIattributes(field,fieldcopy, drawPanel, true); //you can set here if u want darkmode
 
         //Setup Objects when needed
         savedBlocks.setupSavedBlock();//setup Saved blocks w/ setupSavedBlocks();

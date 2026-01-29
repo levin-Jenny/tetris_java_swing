@@ -1,7 +1,11 @@
 package UI;
 
+import GameLogic.Block;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class DrawPanel extends JPanel {
     private int strokeWidht = 3;
@@ -12,15 +16,20 @@ public class DrawPanel extends JPanel {
     private int level = 1;
     private int score = 0;
     private Font font = new Font("Arial", Font.PLAIN, 22);
-    private int[][] nextBlockCoords;
     private char nextBlockType;
-    private int[][] holdBlockCoords;
+
+    private Queue<Character> nextBlockQueue;
+
     private char holdBlockType;
     private boolean darkMode = false;
 
     public void turnDarkModeOn()
     {
         darkMode = true;
+    }
+
+    public void setNextBlockQueue(Queue<Character> nextBlockQueue) {
+        this.nextBlockQueue = nextBlockQueue;
     }
 
     private void setPenColor(Graphics2D g2)
@@ -38,6 +47,8 @@ public class DrawPanel extends JPanel {
 
 
 
+
+
     private int[][] field;
 
     public void setDrawPanelfield(int[][] field)
@@ -46,14 +57,14 @@ public class DrawPanel extends JPanel {
     }
 
     public void paintField(int[][] newField) {
+        /*
+        * Changes The field to the passed in Field and Paints it after w/ repaint
+        *
+        * TODO: Save Both fields in this Object and make that you can Choose with an enum value
+        *
+        * */
 
-        int[][] copy = new int[newField.length][newField[0].length];
-        for (int i = 0; i < newField.length; i++) {
-            copy[i] = newField[i].clone();
-        }
-
-
-        field = copy;
+        this.field = newField;
 
         repaint();
     }
@@ -72,13 +83,12 @@ public class DrawPanel extends JPanel {
 
     public void updateNextBlockCoords(int[][] nextBlockCoords, char nextBlockType)
     {
-        this.nextBlockCoords = nextBlockCoords;
+
         this.nextBlockType = nextBlockType;
     }
 
     public void updateHoldBlock(int[][] holdBlockCoords, char holdBlockType)
     {
-        this.holdBlockCoords = holdBlockCoords;
         this.holdBlockType = holdBlockType;
     }
 
@@ -144,6 +154,10 @@ public class DrawPanel extends JPanel {
 
     protected void paintNextBlock(Graphics2D g2)
     {
+
+        int[][] nextBlockCoords = Block.getBlockCoordsByType(nextBlockQueue.peek());
+
+
         int rightSideOfField =  200+ (field[0].length+1) *cellWidht;
 
         int xMiniGrid = 0;
@@ -167,30 +181,9 @@ public class DrawPanel extends JPanel {
             yMiniGrid++;
         }
 
-        switch(nextBlockType)
-        {
-            case 'i':
-                g2.setColor(Color.BLUE);
-                break;
-            case 't':
-                g2.setColor(Color.GREEN);
-                break;
-            case 'j':
-                g2.setColor(Color.YELLOW);
-                break;
-            case 'l':
-                g2.setColor(Color.ORANGE);
-                break;
-            case 's':
-                g2.setColor(Color.magenta);
-                break;
-            case 'z':
-                g2.setColor(Color.CYAN);
-                break;
-            case 'o':
-                g2.setColor(Color.RED);
-                break;
-        }
+        g2.setColor(Block.getBlockColorByType(nextBlockQueue.peek())); //Set The Color matching to the Type
+
+
 
         for(int[] coord: nextBlockCoords)
         {
@@ -259,9 +252,10 @@ public class DrawPanel extends JPanel {
                 break;
         }
 
-        if (holdBlockCoords != null)
+        if (holdBlockType != '\u0000') //Test if null
         {
-            for(int[] coord: holdBlockCoords)
+            int[][] blockCoords = Block.getBlockCoordsByType(holdBlockType); //Just Translate Type To Coords and use Those later
+            for(int[] coord: blockCoords)
             {
                 y = coord[0];
                 x = coord[1];

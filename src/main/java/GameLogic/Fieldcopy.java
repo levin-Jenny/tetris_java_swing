@@ -72,13 +72,14 @@ public class Fieldcopy {
         if (canHoldBlock)
         {
             updateFieldCopy();
-            savedBlocks.holdBlock(blockCoords, blockType, this);
+            savedBlocks.holdBlock(blockType, this);
             int xCoord = field[0].length / 2;
             blockPositionCoords = new int[] {1, xCoord};
             writeIntoFieldCopy(blockCoords, blockPositionCoords);
             paintField();
             canHoldBlock = false;
-            ui.setHoldBlockCoords(savedBlocks.holdBlockCoords,savedBlocks.typeHoldBlockCoords);
+            ui.setHoldBlockCoords(Block.getBlockCoordsByType(savedBlocks.typeHoldBlock),savedBlocks.typeHoldBlock);
+
         }
 
     }

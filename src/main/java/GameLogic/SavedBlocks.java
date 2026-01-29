@@ -1,18 +1,23 @@
 package GameLogic;
 
-import UI.UI;
+import UI.*;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Random;
 
 public class SavedBlocks {
-    Random random;
-    Fieldcopy fieldcopy;
-    UI ui;
+    private Random random;
+    private Fieldcopy fieldcopy;
+    private UI ui;
+    private DrawPanel drawPanel;
+    Queue<Character> nextBlocksTypes = new ArrayDeque<>(); // I dont save the whole Block i just save the type so I will just Generate it Again
+    int[][] nextBlockBufferCoords;
+    char typeNextBlockBufferCoords;
 
-    int[][] nextBlockCoords;
-    char typeNextBlockCoords;
-    int[][] holdBlockCoords;
-    char typeHoldBlockCoords;
+    char typeHoldBlock; // I dont save the whole Block i just save the type so I will just Generate it Again
+
+    private boolean moreHoldBlocks;
 
 
 
@@ -20,60 +25,83 @@ public class SavedBlocks {
 
     }
 
-    public void setSavedBlocksAttributes(Fieldcopy fieldcopy, UI ui, int seed)
+    public void setSavedBlocksAttributes(Fieldcopy fieldcopy, UI ui, boolean seedActive, int seed, DrawPanel drawPanel, boolean moreHoldBlocks)
     {
-        if (seed == 0)
+        if (!seedActive)
         {
             this.random = new Random();
         }
         else
-        {this.random = new Random(seed);}
+        {
+            this.random = new Random(seed);
+        }
+
+        this.drawPanel = drawPanel;
+        this.moreHoldBlocks = moreHoldBlocks;
 
         this.fieldcopy = fieldcopy;
         this.ui = ui;
     }
 
+    public void addNextBlockToQueue()
+    {
+        nextBlocksTypes.add(BlocksQueue.getBlock(random));
+    }
+
     public void setupSavedBlock()
     {
-        Block.newBlock(this, random);
-    }
 
-    public void setNextBlockCoords(int[][] nextBlockCoords) {
-        this.nextBlockCoords = nextBlockCoords;
-        ui.setNextBlockCoords(nextBlockCoords, typeNextBlockCoords);
-    }
-
-    public void setTypeNextBlockCoords(char typeNextBlockCoords) {
-        this.typeNextBlockCoords = typeNextBlockCoords;
-    }
-
-    public void holdBlock(int[][] blockCoords, char type, Fieldcopy fieldcopy)
-    {
-        if (holdBlockCoords != null)
+        if(moreHoldBlocks)
         {
-            fieldcopy.setBlockCoords(holdBlockCoords);
-            fieldcopy.setBlockType(typeHoldBlockCoords);
+            for (int i = 0; i < 4; i++)
+            {
+                addNextBlockToQueue();
+            }
         }
         else
         {
-            fieldcopy.setBlockCoords(nextBlockCoords);
-            fieldcopy.setBlockType(typeNextBlockCoords);
+            addNextBlockToQueue();
+        }
+        drawPanel.setNextBlockQueue(nextBlocksTypes);
+    }
 
-            Block.newBlock(this, random);
+    public void setUpdateDrawPanelBlocksQueue(int[][] nextBlockBufferCoords) {
+        this.nextBlockBufferCoords = nextBlockBufferCoords;
+        //Todo make queue in drawpanel
+        //ui.setNextBlockCoords(nextBlocksCoords.peek(), nextBlocksTypes.peek());
+    }
+
+    public void setTypeNextBlockBufferCoords(char typeNextBlockBufferCoords) {
+        this.typeNextBlockBufferCoords = typeNextBlockBufferCoords;
+    }
+
+    public void holdBlock(char type, Fieldcopy fieldcopy)
+    {
+
+        if (typeHoldBlock != '\u0000') //Checks if is not Equivalent to null for char
+        {
+            fieldcopy.setBlockCoords(Block.getBlockCoordsByType(typeHoldBlock));
+            fieldcopy.setBlockType(typeHoldBlock);
+        }
+        else
+        {
+            fieldcopy.setBlockCoords(Block.getBlockCoordsByType(nextBlocksTypes.peek()));
+            fieldcopy.setBlockType(nextBlocksTypes.poll());
+
+            addNextBlockToQueue();
 
 
         }
 
 
-        holdBlockCoords = blockCoords;
-        typeHoldBlockCoords = type;
+        typeHoldBlock = type;
     }
 
     public void newBlock()
     {
-        fieldcopy.setBlockCoords(nextBlockCoords);
-        fieldcopy.setBlockType(typeNextBlockCoords);
-        Block.newBlock(this, random);
+        fieldcopy.setBlockCoords(Block.getBlockCoordsByType(nextBlocksTypes.peek()));
+        fieldcopy.setBlockType(nextBlocksTypes.poll());
+        addNextBlockToQueue();
     }
 
 

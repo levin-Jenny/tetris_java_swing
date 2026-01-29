@@ -21,18 +21,19 @@ public class UI extends JFrame {
 
     public UI()
     {
-        this.drawPanel = new DrawPanel();
     }
+
     public void setUpUI()
     {
         initComponents();
     }
 
-    public void setUIattributes(Field field, Fieldcopy fieldcopy, boolean darkmode)
+    public void setUIattributes(Field field, Fieldcopy fieldcopy, DrawPanel drawPanel,  boolean darkmode)
     {
         this.field = field;
         this.fieldcopy = fieldcopy;
         this.darkmode = darkmode;
+        this.drawPanel = drawPanel;
     }
 
     public void turnDarkModeOn()
@@ -49,10 +50,6 @@ public class UI extends JFrame {
         drawPanel.paintField(field.getField());
     }
 
-
-    public void setFieldcopy(Fieldcopy fieldcopy) {
-        this.fieldcopy = fieldcopy;
-    }
 
     public void setNextBlockCoords(int[][] nextBlockCoords, char nextBlockType) {
         drawPanel.updateNextBlockCoords(nextBlockCoords, nextBlockType);

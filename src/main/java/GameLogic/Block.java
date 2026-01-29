@@ -1,21 +1,15 @@
 package GameLogic;
 
+import java.awt.*;
 import java.util.Random;
 
 public abstract class Block {
 
 
-
-    public static void newBlock(SavedBlocks savedBlocks, Random rand)
-    {
-        int[][] blockCoords = choseBlockType(BlocksQueue.getBlock(rand),savedBlocks);
-        savedBlocks.setNextBlockCoords(blockCoords);
-    }
-
-
-    public static int[][] choseBlockType(char type, SavedBlocks savedBlocks)
+    public static int[][] getBlockCoordsByType(char type)
     {
         int[][] blockCoords = new int[4][2];
+
         switch(type)
         {
             case 'i':
@@ -63,10 +57,27 @@ public abstract class Block {
             default:
                 throw new IllegalArgumentException("Invalid Block type");
         }
-        savedBlocks.setTypeNextBlockCoords(type);
-        return blockCoords;
 
+        return blockCoords;
     }
+
+
+    public static Color getBlockColorByType(char type)
+    {
+        return switch (type) {
+            case 'i' -> Color.BLUE;
+            case 't' -> Color.GREEN;
+            case 'j' -> Color.YELLOW;
+            case 'l' -> Color.ORANGE;
+            case 's' -> Color.magenta;
+            case 'z' -> Color.CYAN;
+            case 'o' -> Color.RED;
+            default -> null;
+        };
+    }
+
+
+
 
     public static int[][] rotateBlockClockwise(int[][] blockCoords, char blockType)
     {
