@@ -1,7 +1,6 @@
 package GameLogic;
 
 import java.awt.*;
-import java.util.Random;
 
 public abstract class Block {
 
@@ -20,9 +19,7 @@ public abstract class Block {
     private static final int[][] L_BLOCK = {{0, 0}, {1, 0}, {-1, 1}, {-1, 0}};
 
 
-
-    public static int[][] getBlockCoordsByType(char type)
-    {
+    public static int[][] getBlockCoordsByType(char type) {
         return switch (type) {
             case 'i' -> I_BLOCK;
             case 't' -> T_BLOCK;
@@ -36,8 +33,7 @@ public abstract class Block {
     }
 
 
-    public static Color getBlockColorByType(char type)
-    {
+    public static Color getBlockColorByType(char type) {
         return switch (type) {
             case 'i' -> Color.BLUE;
             case 't' -> Color.GREEN;
@@ -50,11 +46,24 @@ public abstract class Block {
         };
     }
 
-
-    public static int getIntByType(char type)
+    public static Color getColorByInt(int type)
     {
         return switch (type)
         {
+            case 1 -> Color.BLUE;
+            case 2 -> Color.GREEN;
+            case 3 -> Color.YELLOW;
+            case 4 -> Color.ORANGE;
+            case 5 -> Color.MAGENTA;
+            case 6 -> Color.CYAN;
+            case 7 -> Color.RED;
+            case 8 -> Color.lightGray;
+            default -> null;
+        };
+    }
+
+    public static int getIntByType(char type) {
+        return switch (type) {
             case 'i' -> 1;
             case 't' -> 2;
             case 'j' -> 3;
@@ -66,25 +75,25 @@ public abstract class Block {
         };
     }
 
-    public static int[][] rotateBlockClockwise(int[][] blockCoords, char blockType)
-    {
+    private enum RotationKinds {
+        clockwise,
+        counterclockwise,
+        flip
+    }
 
+    public static int[][] rotateBlock(RotationKinds direction, char blockType, int[][] blockCoords) {
         int[][] copyBlockCoords = new int[4][2];
 
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             copyBlockCoords[i] = blockCoords[i].clone();
         }
+        if (blockType == 'o') { //o block shouldn't be rotated as it else would just shift around
+            return copyBlockCoords;
+        }
 
-        switch(blockType)
-        {
-            case 'i':
-            case 't':
-            case 'j':
-            case 'l':
-            case 's':
-            case 'z':
-                for(int[] singlePoint: copyBlockCoords) {
+        switch (direction) {
+            case clockwise:
+                for (int[] singlePoint : copyBlockCoords) {
                     int x = singlePoint[1];
                     int y = singlePoint[0];
 
@@ -92,32 +101,8 @@ public abstract class Block {
                     singlePoint[1] = y;
                 }
                 break;
-            case 'o':
-                break;
-
-
-        }
-        return copyBlockCoords;
-    }
-
-    public static int[][] rotateBlockCounterClockwise(int[][] blockCoords, char blockType)
-    {
-        int[][] copyBlockCoords = new int[4][2];
-
-        for (int i = 0; i < 4; i++)
-        {
-            copyBlockCoords[i] = blockCoords[i].clone();
-        }
-
-        switch(blockType)
-        {
-            case 'i':
-            case 't':
-            case 'j':
-            case 'l':
-            case 's':
-            case 'z':
-                for(int[] singlePoint: copyBlockCoords) {
+            case counterclockwise:
+                for (int[] singlePoint : copyBlockCoords) {
                     int x = singlePoint[1];
                     int y = singlePoint[0];
 
@@ -125,31 +110,8 @@ public abstract class Block {
                     singlePoint[1] = y * -1;
                 }
                 break;
-            case 'o':
-                break;
-
-
-        }
-        return copyBlockCoords;
-    }
-
-    public static int[][] flipBlock(int[][] blockCoords, char blockType)
-    {
-        int[][] copyBlockCoords = new int[4][2];
-
-        for (int i = 0; i < 4; i++)
-        {
-            copyBlockCoords[i] = blockCoords[i].clone();
-        }
-        switch(blockType)
-        {
-            case 'i':
-            case 't':
-            case 'j':
-            case 'l':
-            case 's':
-            case 'z':
-                for(int[] singlePoint: copyBlockCoords) {
+            case flip:
+                for (int[] singlePoint : copyBlockCoords) {
                     int x = singlePoint[1];
                     int y = singlePoint[0];
 
@@ -157,12 +119,24 @@ public abstract class Block {
                     singlePoint[1] = x * -1;
                 }
                 break;
-            case 'o':
-                break;
+
         }
         return copyBlockCoords;
     }
 
+    public static int[][] rotateBlockClockwise(int[][] blockCoords, char blockType) {
 
+        return rotateBlock(RotationKinds.clockwise, blockType, blockCoords);
 
+    }
+
+    public static int[][] rotateBlockCounterClockwise(int[][] blockCoords, char blockType) {
+        return rotateBlock(RotationKinds.counterclockwise, blockType, blockCoords);
+
+    }
+
+    public static int[][] flipBlock(int[][] blockCoords, char blockType) {
+        return rotateBlock(RotationKinds.flip, blockType, blockCoords);
+
+    }
 }

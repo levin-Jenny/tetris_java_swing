@@ -4,7 +4,6 @@ import GameLogic.Block;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
 import java.util.Queue;
 
 public class DrawPanel extends JPanel {
@@ -78,7 +77,6 @@ public class DrawPanel extends JPanel {
     public void updateLevel(int level)
     {
         this.level = level;
-        repaint();
     }
 
     public void updateScore(int score)
@@ -109,13 +107,61 @@ public class DrawPanel extends JPanel {
         );
 
 
-        paintGrid(g2);
+        paintField(g2);
         paintLevel(g2);
         paintScore(g2);
         paintNextBlock(g2);
         paintHoldBlock(g2);
 
     }
+
+    protected void drawGrid(Graphics2D g2, int startCoordX, int startCoordY, int height, int width)
+    {
+        /**
+         * Draws a Grid
+         *
+         * @param g2 is the Graphics Object
+         * @param startCoordY is the y part Of the startCoord on the top Left
+         * @param startCoordX is the x part Of the startCoord on the top Left
+         * @param height how high the grid is in CellHeights
+         * @param width how wide the grid is in CellWidths
+         * */
+
+        g2.setColor(Color.LIGHT_GRAY); // Always in Gray , the Outline then has to be drawn in the Color setPenColor() returns
+        for (int  i = 0; i < width; i++) //Width
+        {
+            for (int j = 0; j < height; j++) //Height
+            {
+                g2.drawRect(startCoordX + i*cellWidht, startCoordY + j*cellHeight, cellWidht, cellHeight);
+            }
+        }
+
+    }
+
+    protected void drawGridContents(Graphics2D g2, int startCoordX, int startCoordY, int[][] field)
+    {
+        /**
+         * Draws a Grid
+         *
+         * @param g2 is the Graphics Object
+         * @param startCoordY is the y part Of the startCoord on the top Left
+         * @param startCoordX is the x part Of the startCoord on the top Left
+         * @param field Draws all none 0 parts of the Grid in the Right Colors
+         * */
+
+        for(int i = 0; i < field.length; i++) // X coord  or Widht
+        {
+            for (int j = 0; j < field[i].length; j++) // Y coord  or Height
+            {
+                if (field[i][j] != 0)
+                {
+                    g2.setColor(Block.getColorByInt(field[i][j]));
+                    g2.fillRect(startCoordX + j* cellWidht, startCoordY + i*cellHeight, cellWidht, cellHeight);
+                }
+            }
+        }
+    }
+
 
 
     protected void paintLevel(Graphics2D g2)
@@ -155,34 +201,44 @@ public class DrawPanel extends JPanel {
 
     protected void paintNextBlock(Graphics2D g2)
     {
-
-        int[][] nextBlockCoords = Block.getBlockCoordsByType(nextBlockQueue.peek());
-
-
-        int rightSideOfField =  200+ (field[0].length+1) *cellWidht;
-
-        int xMiniGrid = 0;
-        int yMiniGrid = 0;
-
-
+        int leftSideOfNextBlocks = 200-4*cellWidht;
 
         g2.setFont(font);
 
-        g2.drawString("Next:",rightSideOfField+25,cellHeight*7 + 22);
+        g2.drawString("Next:", leftSideOfNextBlocks +25,cellHeight + 22);
 
-        g2.setColor(Color.lightGray);
-        for (int i = 0; i < 4; i++)
+        setPenColor(g2);
+
+        g2.setStroke(new BasicStroke(strokeWidht));
+
+        g2.drawRect(leftSideOfNextBlocks, cellHeight, cellWidht*3, cellHeight*5);
+
+        g2.drawLine(leftSideOfNextBlocks, cellHeight * 2, leftSideOfNextBlocks + cellWidht*3, cellHeight * 2);
+
+        int startCoordX = leftSideOfNextBlocks;
+        int startCoordY = cellHeight * 2;
+
+        for (char block: nextBlockQueue)
         {
-            xMiniGrid = 0;
-            for (int j = 0; j < 3; j++)
-            {
-                g2.drawRect(rightSideOfField+cellWidht*xMiniGrid,cellHeight*8+cellHeight*yMiniGrid,cellWidht,cellHeight);
-                xMiniGrid++;
-            }
-            yMiniGrid++;
+            paintNextBlocks(g2, startCoordX, startCoordY, block);
+            startCoordY += cellHeight * 4;
         }
 
-        g2.setColor(Block.getBlockColorByType(nextBlockQueue.peek())); //Set The Color matching to the Type
+
+    }
+
+    protected void paintNextBlocks(Graphics2D g2, int leftSideOfNextBlocks, int startCoordY, char blockType)
+    {
+
+        int[][] nextBlockCoords = Block.getBlockCoordsByType(blockType);
+
+
+
+
+        drawGrid(g2, 200-4*cellWidht,startCoordY, 4, 3);
+
+
+        g2.setColor(Block.getBlockColorByType(blockType)); //Set The Color matching to the Type
 
 
 
@@ -191,42 +247,23 @@ public class DrawPanel extends JPanel {
             y = coord[0];
             x = coord[1];
 
-            g2.fillRect(rightSideOfField +(x+1)*cellWidht, cellHeight*8+(y+1)*cellHeight,cellWidht,cellHeight);
+            g2.fillRect(leftSideOfNextBlocks +(x+1)*cellWidht, startCoordY+(y+1)*cellHeight,cellWidht,cellHeight);
         }
 
 
-        setPenColor(g2);
-        g2.setStroke(new BasicStroke(strokeWidht));
-
-        g2.drawRect(rightSideOfField, cellHeight * 7, cellWidht*3, cellHeight*5);
-
-        g2.drawLine(rightSideOfField, cellHeight * 8, rightSideOfField + cellWidht*3, cellHeight * 8);
     }
 
     protected void paintHoldBlock(Graphics2D g2)
     {
         int rightSideOfField =  200+ (field[0].length+1) *cellWidht;
 
-        int xMiniGrid = 0;
-        int yMiniGrid = 0;
-
-
 
         g2.setFont(font);
 
-        g2.drawString("Hold:",rightSideOfField+25,cellHeight*13 + 22);
+        g2.drawString("Hold:",rightSideOfField+25,cellHeight*7 + 22);
 
-        g2.setColor(Color.lightGray);
-        for (int i = 0; i < 4; i++)
-        {
-            xMiniGrid = 0;
-            for (int j = 0; j < 3; j++)
-            {
-                g2.drawRect(rightSideOfField+cellWidht*xMiniGrid,cellHeight*14+cellHeight*yMiniGrid,cellWidht,cellHeight);
-                xMiniGrid++;
-            }
-            yMiniGrid++;
-        }
+        drawGrid(g2,rightSideOfField, cellHeight*8, 4, 3);
+
 
         g2.setColor(Block.getBlockColorByType(holdBlockType));
 
@@ -239,7 +276,7 @@ public class DrawPanel extends JPanel {
                 y = coord[0];
                 x = coord[1];
 
-                g2.fillRect(rightSideOfField +(x+1)*cellWidht, cellHeight*14+(y+1)*cellHeight,cellWidht,cellHeight);
+                g2.fillRect(rightSideOfField +(x+1)*cellWidht, cellHeight*8+(y+1)*cellHeight,cellWidht,cellHeight);
             }
         }
 
@@ -248,57 +285,17 @@ public class DrawPanel extends JPanel {
         setPenColor(g2);
         g2.setStroke(new BasicStroke(strokeWidht));
 
-        g2.drawRect(rightSideOfField, cellHeight * 13, cellWidht*3, cellHeight*5);
+        g2.drawRect(rightSideOfField, cellHeight * 7, cellWidht*3, cellHeight*5);
 
-        g2.drawLine(rightSideOfField, cellHeight * 14, rightSideOfField + cellWidht*3, cellHeight * 14);
+        g2.drawLine(rightSideOfField, cellHeight * 8, rightSideOfField + cellWidht*3, cellHeight * 8);
     }
 
 
-    protected void paintGrid(Graphics2D g2)
+    protected void paintField(Graphics2D g2)
     {
 
-
-        y = 0;
-        for(int[] line: field)
-        {
-            x = 0;
-            for (int i = 0; i < line.length; i++)
-            {
-                g2.setColor(Color.LIGHT_GRAY);
-                g2.drawRect(x*cellWidht+200,y*cellHeight,cellWidht,cellHeight);
-                if (line[x] != 0)
-                {
-                    switch (line[x])
-                    {
-                        case 1:
-                            g2.setColor(Color.BLUE);
-                            break;
-                        case 2:
-                            g2.setColor(Color.GREEN);
-                            break;
-                        case 3:
-                            g2.setColor(Color.YELLOW);
-                            break;
-                        case 4:
-                            g2.setColor(Color.ORANGE);
-                            break;
-                        case 5:
-                            g2.setColor(Color.magenta);
-                            break;
-                        case 6:
-                            g2.setColor(Color.CYAN);
-                            break;
-                        case 7:
-                            g2.setColor(Color.RED);
-                            break;
-                    }
-                    g2.fillRect(x*cellWidht+200,y*cellHeight,cellWidht,cellHeight);
-                }
-                x++;
-            }
-            y++;
-        }
-
+        drawGridContents(g2, 200,0,field);
+        drawGrid(g2,200,0, field.length, field[0].length);
 
         setPenColor(g2);
         g2.setStroke(new BasicStroke(strokeWidht));

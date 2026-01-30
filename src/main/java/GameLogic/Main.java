@@ -4,8 +4,7 @@ import UI.UI;
 import UI.DrawPanel;
 
 public class Main {
-    static void main()
-    {
+    public Main() {
         //Create Objects
         Field field = new Field(10,22);
         Fieldcopy fieldcopy = new Fieldcopy();
@@ -22,7 +21,7 @@ public class Main {
         fieldcopy.setFieldcopyAttributes(savedBlocks, field, ui, gravity, gameStats);
         gameStats.setGameStatsAttributes(gravity, ui, gameModifiers);
         gravity.setGravityAttributes(fieldcopy, gameModifiers);
-        savedBlocks.setSavedBlocksAttributes(fieldcopy, ui, true,1, drawPanel, true); //If seedActive,You can set the Seed for the game, else the seed Will be "Random"
+        savedBlocks.setSavedBlocksAttributes(fieldcopy, ui, true,1, drawPanel, false); //If seedActive,You can set the Seed for the game, else the seed Will be "Random"
         ui.setUIattributes(field,fieldcopy, drawPanel, true); //you can set here if u want darkmode
 
         //Setup Objects when needed
@@ -30,6 +29,10 @@ public class Main {
         fieldcopy.setUpFieldcopy();     //getNewBlock();, updateFieldCopy(); in Fieldcopy w/ setupFieldcopy
         ui.setUpUI();   //setup UI (to start initComponents();)
         gravity.start();        //Start Gravity
+    }
 
+
+    static void main() {
+        new Main();
     }
 }

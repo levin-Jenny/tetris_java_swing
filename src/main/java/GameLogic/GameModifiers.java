@@ -1,7 +1,5 @@
 package GameLogic;
 
-import java.util.Random;
-
 public class GameModifiers {
     boolean garbageActive;
     private Field field;
