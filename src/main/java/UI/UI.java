@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.security.Key;
 
 public class UI extends JFrame {
     private Field field;
@@ -88,7 +89,7 @@ public class UI extends JFrame {
         InputMap inputMap = drawPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = drawPanel.getActionMap();
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "RotateClockwise");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "RotateClockwise");
         actionMap.put("RotateClockwise", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -96,7 +97,7 @@ public class UI extends JFrame {
                     }
                 }
         );
-        inputMap.put(KeyStroke.getKeyStroke( "A"), "RotateCounterClockwise");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "RotateCounterClockwise");
         actionMap.put("RotateCounterClockwise", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -105,7 +106,7 @@ public class UI extends JFrame {
                 }
         );
 
-        inputMap.put(KeyStroke.getKeyStroke("S"), "FlipBlock");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "FlipBlock");
         actionMap.put("FlipBlock", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -124,7 +125,7 @@ public class UI extends JFrame {
         );
 
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "Links");
+        inputMap.put(KeyStroke.getKeyStroke("A"), "Links");
         actionMap.put("Links", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -133,7 +134,7 @@ public class UI extends JFrame {
                 }
         );
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "Right");
+        inputMap.put(KeyStroke.getKeyStroke("D"), "Right");
         actionMap.put("Right", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -142,7 +143,7 @@ public class UI extends JFrame {
                 }
         );
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "Down");
+        inputMap.put(KeyStroke.getKeyStroke("S"), "Down");
         actionMap.put("Down", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
