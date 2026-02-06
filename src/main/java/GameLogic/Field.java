@@ -14,6 +14,7 @@ public class Field {
     private UI ui;
     private GameStats gameStats;
     private Random random;
+    private Gravity gravity;
 
 
     public int[][] getField() {
@@ -29,11 +30,12 @@ public class Field {
     }
 
 
-    public void setFieldAtrributes(UI ui, Fieldcopy fieldcopy, GameStats gameStats)
+    public void setFieldAtrributes(UI ui, Fieldcopy fieldcopy, GameStats gameStats, Gravity gravity)
     {
         this.ui = ui;
         this.fieldcopy = fieldcopy;
         this.gameStats = gameStats;
+        this.gravity = gravity;
     }
 
     public void failCheck()
@@ -42,7 +44,7 @@ public class Field {
         {
             if(i != 0)
             {
-                 System.exit(1);
+                 gravity.stop();
             }
         }
     }

@@ -9,7 +9,6 @@ import java.util.Random;
 public class SavedBlocks {
     private Random random;
     private Fieldcopy fieldcopy;
-    private UI ui;
     private DrawPanel drawPanel;
     Queue<Character> nextBlocksTypes = new ArrayDeque<>(); // I dont save the whole Block i just save the type so I will just Generate it Again
 
@@ -23,7 +22,7 @@ public class SavedBlocks {
 
     }
 
-    public void setSavedBlocksAttributes(Fieldcopy fieldcopy, UI ui, boolean seedActive, int seed, DrawPanel drawPanel, boolean moreHoldBlocks)
+    public void setSavedBlocksAttributes(Fieldcopy fieldcopy, boolean seedActive, int seed, DrawPanel drawPanel, boolean moreHoldBlocks)
     {
         if (!seedActive)
         {
@@ -38,7 +37,7 @@ public class SavedBlocks {
         this.moreHoldBlocks = moreHoldBlocks;
 
         this.fieldcopy = fieldcopy;
-        this.ui = ui;
+
     }
 
     public void addNextBlockToQueue()
@@ -78,7 +77,6 @@ public class SavedBlocks {
             fieldcopy.setBlockType(nextBlocksTypes.poll());
 
             addNextBlockToQueue();
-
 
         }
 

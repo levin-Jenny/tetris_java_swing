@@ -2,18 +2,19 @@ package UI;
 
 import GameLogic.Field;
 import GameLogic.Fieldcopy;
+import GameLogic.GameStats;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 
 public class UI extends JFrame {
     private Field field;
     private Fieldcopy fieldcopy;
     private DrawPanel drawPanel;
     private boolean darkmode = false;
+    private boolean running = true;
 
 
 //    ArrayList<Field> fields = new ArrayList<Field>();
@@ -22,6 +23,10 @@ public class UI extends JFrame {
 
     public UI()
     {
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     public void setUpUI()
@@ -52,9 +57,9 @@ public class UI extends JFrame {
     }
 
 
-    public void setHoldBlockCoords(int[][] holdBlockCoords, char nextBlockType)
+    public void setHoldBlockCoords(char nextBlockType)
     {
-        drawPanel.updateHoldBlock(holdBlockCoords, nextBlockType);
+        drawPanel.updateHoldBlock(nextBlockType);
     }
 
     public void setLevel(int level) {
@@ -93,15 +98,25 @@ public class UI extends JFrame {
         actionMap.put("RotateClockwise", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.rotateBlockClockwise();
+                        if (running)
+                        {
+                            fieldcopy.rotateBlockClockwise();
+                        }
+
                     }
                 }
         );
+
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "RotateCounterClockwise");
         actionMap.put("RotateCounterClockwise", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.rotateBlockCounterClockwise();
+
+                        if (running)
+                        {
+
+                            fieldcopy.rotateBlockCounterClockwise();
+                        }
                     }
                 }
         );
@@ -110,7 +125,11 @@ public class UI extends JFrame {
         actionMap.put("FlipBlock", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.flipBlock();
+                        if (running)
+                        {
+                            fieldcopy.flipBlock();
+                        }
+
                     }
                 }
         );
@@ -119,7 +138,11 @@ public class UI extends JFrame {
         actionMap.put("HoldBlock", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.holdBlock();
+                        if (running)
+                        {
+                            fieldcopy.holdBlock();
+                        }
+
                     }
                 }
         );
@@ -129,7 +152,10 @@ public class UI extends JFrame {
         actionMap.put("Links", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.moveLeft();
+                        if (running)
+                        {
+                            fieldcopy.moveLeft();
+                        }
                     }
                 }
         );
@@ -138,7 +164,10 @@ public class UI extends JFrame {
         actionMap.put("Right", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.moveRight();
+                        if (running)
+                        {
+                            fieldcopy.moveRight();
+                        }
                     }
                 }
         );
@@ -147,7 +176,10 @@ public class UI extends JFrame {
         actionMap.put("Down", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.moveBlockDown();
+                        if (running)
+                        {
+                            fieldcopy.moveBlockDown();
+                        }
                     }
                 }
         );
@@ -156,7 +188,10 @@ public class UI extends JFrame {
         actionMap.put("DashDown", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        fieldcopy.dashDown();
+                        if (running)
+                        {
+                            fieldcopy.dashDown();
+                        }
                     }
                 }
         );

@@ -1,5 +1,7 @@
 package GameLogic;
 
+import UI.UI;
+
 public class Gravity implements Runnable {
 
     private Fieldcopy fieldcopy;
@@ -9,6 +11,7 @@ public class Gravity implements Runnable {
     private long now;
     private long lastFallTime;
     private GameModifiers gameModifiers;
+    private UI ui;
 
 
 
@@ -17,10 +20,11 @@ public class Gravity implements Runnable {
 
     }
 
-    public void setGravityAttributes(Fieldcopy fieldcopy, GameModifiers gameModifiers)
+    public void setGravityAttributes(Fieldcopy fieldcopy, GameModifiers gameModifiers, UI ui)
     {
         this.fieldcopy = fieldcopy;
         this.gameModifiers = gameModifiers;
+        this.ui = ui;
     }
 
     public void upDateInterval(int levels)
@@ -55,11 +59,13 @@ public class Gravity implements Runnable {
 
     public void stop() {
         running = false;
+        ui.setRunning(false);
     }
 
     public void start()
     {
         running = true;
+        ui.setRunning(true);
         lastFallTime -= interval;
         thread = new Thread(this, "Gravity-Thread");
         thread.start();

@@ -78,7 +78,7 @@ public class Fieldcopy {
             writeIntoFieldCopy(blockCoords, blockPositionCoords);
             paintField();
             canHoldBlock = false;
-            ui.setHoldBlockCoords(Block.getBlockCoordsByType(savedBlocks.typeHoldBlock),savedBlocks.typeHoldBlock);
+            ui.setHoldBlockCoords(savedBlocks.typeHoldBlock);
 
         }
 
@@ -194,7 +194,6 @@ public class Fieldcopy {
         else
         {
             placeBlock();
-            return;
         }
     }
 

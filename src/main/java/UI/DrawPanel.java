@@ -7,14 +7,14 @@ import java.awt.*;
 import java.util.Queue;
 
 public class DrawPanel extends JPanel {
-    private int strokeWidht = 3;
-    private int cellWidht = 35;
-    private int cellHeight = cellWidht;
+    private final int strokeWidht = 3;
+    private final int cellWidht = 35;
+    private final int cellHeight = cellWidht;
     private int x = 0;
     private int y = 0;
     private int level = 1;
     private int score = 0;
-    private Font font = new Font("Arial", Font.PLAIN, 22);
+    private final Font font = new Font("Arial", Font.PLAIN, 22);
 
     private Queue<Character> nextBlockQueue;
 
@@ -86,7 +86,7 @@ public class DrawPanel extends JPanel {
     }
 
 
-    public void updateHoldBlock(int[][] holdBlockCoords, char holdBlockType)
+    public void updateHoldBlock(char holdBlockType)
     {
         this.holdBlockType = holdBlockType;
     }
@@ -117,7 +117,7 @@ public class DrawPanel extends JPanel {
 
     protected void drawGrid(Graphics2D g2, int startCoordX, int startCoordY, int height, int width)
     {
-        /**
+        /* *
          * Draws a Grid
          *
          * @param g2 is the Graphics Object
@@ -140,7 +140,7 @@ public class DrawPanel extends JPanel {
 
     protected void drawGridContents(Graphics2D g2, int startCoordX, int startCoordY, int[][] field)
     {
-        /**
+        /* *
          * Draws a Grid
          *
          * @param g2 is the Graphics Object
@@ -215,12 +215,11 @@ public class DrawPanel extends JPanel {
 
         g2.drawLine(leftSideOfNextBlocks, cellHeight * 2, leftSideOfNextBlocks + cellWidht*3, cellHeight * 2);
 
-        int startCoordX = leftSideOfNextBlocks;
         int startCoordY = cellHeight * 2;
 
         for (char block: nextBlockQueue)
         {
-            paintNextBlocks(g2, startCoordX, startCoordY, block);
+            paintNextBlocks(g2, leftSideOfNextBlocks, startCoordY, block);
             startCoordY += cellHeight * 4;
         }
 
@@ -259,7 +258,7 @@ public class DrawPanel extends JPanel {
 
 
         g2.setFont(font);
-
+        setPenColor(g2);
         g2.drawString("Hold:",rightSideOfField+25,cellHeight*7 + 22);
 
         drawGrid(g2,rightSideOfField, cellHeight*8, 4, 3);
